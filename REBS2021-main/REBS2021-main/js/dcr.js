@@ -30,7 +30,6 @@ class Event{
         this.events = new Set();
 
         this.marking = new Marking(false, true, false);
-	
         this.conditions = new Set();
         this.respones = new Set();
         this.milestones = new Set();
