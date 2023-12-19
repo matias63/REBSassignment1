@@ -1,56 +1,126 @@
-import DCRGraph from dcr 
+// import DCRGraph from dcr 
 
 
-const graph = DCRGraph(events)
-
-const events = [
-"A(0,0,0)",        
-"B(0,1,1)",        
-"A -->* B",
-"B *--> A",
-"C -->% A",
-"D -->+ A",    
-"D -->* B",
-"A --><> (B, D)"
-];
+// main.js
+const {DCRGraph, Marking, Event} = require('./dcr'); // You don't need to add the '.js' extension
 
 
 
-for (const e of events){
-    const parts = events[e].split("/\s+/");
-    if (length(parts) == 1){
-        const markingParts = events[e].split("(",",",")")
-        e.marking = new Marking(markingParts[1], markingParts[2], markingParts[3])
-        // markingParts[0] = e.marking
-        e.name = markingParts[0]
+// Create an instance of YourClass
+const graph = new DCRGraph();
+
+
+const event = new Event();
+event.events = [
+    "A(0,0,0)",        
+    "B(0,1,1)",        
+    "A -->* B",
+    "B *--> A",
+    "C -->% A",
+    "D -->+ A",    
+    "D -->* B",
+    "A --><> B",
+    "A --><> D"];
+    // "A --><> (B, D)"];
+
+// R1 DCR
+// GraphR1.event = [
+//     "FillOutApplication -->* Other"
+// ]
+// console.log(event.events)
+
+
+// add events
+// graph.addEvent("A","A", m = {ex: false, in: false, pe: false})
+// graph.addEvent("B","B", m = {ex: false, in: true, pe: true})
+// graph.addEvent("C")
+// graph.addEvent("D")
+
+// console.log("State before")
+// console.log(graph.status())
+
+// // add relations
+// graph.addCondition(graph.getEvent("A"), graph.getEvent("B"))
+// graph.addResponse(graph.getEvent("B"), graph.getEvent("A"))
+// graph.addExclude(graph.getEvent("C"), graph.getEvent("A"))
+// graph.addInclude(graph.getEvent("D"), graph.getEvent("A"))
+// graph.addCondition(graph.getEvent("D"), graph.getEvent("B"))
+// graph.addMilestone(graph.getEvent("A"), graph.getEvent("B"))
+// graph.addMilestone(graph.getEvent("A"), graph.getEvent("D"))
+
+// console.log("State after")
+// console.log(graph.status())
+
+// KØR EVENT A
+
+
+
+
+// Har graphen ændret sig? burde B se anderledes ud?'
+// b er ikke pending længere? og a included 
+
+
+// Use the instance or class as needed
+/*
+graph.addEvent(event) 
+*/
+for (const e of event.events){
+    const parts = e.split(" ");
+    console.log("parts: ",parts)
+    // console.log("length of parts: ", parts.length)
+    if (parts.length == 1){
+        const markingParts = parts[0].replace(")","").split(/[,(]/);
+        console.log("marking parts: ",markingParts)
+        
+        // Adding an event with a marking
+        graph.addEvent(markingParts[0], markingParts[0], m= {ex: markingParts[1] == 1, in: markingParts[2] == 1, pe: markingParts[3] == 1})
+
     }
-
-
-    elif (length(parts) > 3)
+    
+    
+    else if (parts.length > 2)
     {
         const eventName = parts[0] 
         const relationType = parts[1]
-        for (let i = 2; i < length(parts); i++){
-            const targetEventName = parts[i].replace("(", "").replace(")","").replace(",", "")
-            switch (relationType) {
-                case "-->*":
-                    graph.addCondition(eventName, targetEventName);
-                    break;
-                case '*-->':
-                    graph.addResponse(eventName, targetEventName);
-                    break;
-                case '-->%':
-                    graph.addMilestone(eventName, targetEventName);
-                    break;
-                case '-->+':
-                    graph.addInclude(eventName, targetEventName);
-                    break;
-                case '--><>':
-                    graph.addMilestone(eventName,targetEventName)
-                default:
-                    break;
-            }
+        // for (let i = 2; i < parts.length; i++){
+        //     const targetEventName = parts[i].replace("(", "").replace(")","").replace(",", "")
+        const targetEventName = parts[2]
+
+        if (!graph.hasEvent(eventName)) {
+            console.log("EventName: ", eventName)
+            console.log("Event exists NOT: ", !graph.hasEvent(eventName))
+            graph.addEvent(eventName)
+        }
+        if (!graph.hasEvent(targetEventName)) {
+            console.log("TargetEventName: ", targetEventName)
+            console.log("Event exists NOT: ", !graph.hasEvent(targetEventName))
+            graph.addEvent(targetEventName)
+        }
+        switch (relationType) {
+            case "-->*":
+                graph.addCondition(graph.getEvent(eventName), graph.getEvent(targetEventName));
+                break;
+            case '*-->':
+                graph.addResponse(graph.getEvent(eventName), graph.getEvent(targetEventName));
+                break;
+            case '-->%':
+                graph.addMilestone(graph.getEvent(eventName), graph.getEvent(targetEventName));
+                break;
+            case '-->+':
+                graph.addInclude(graph.getEvent(eventName), graph.getEvent(targetEventName));
+                break;
+            case '--><>':
+                graph.addMilestone(graph.getEvent(eventName),graph.getEvent(targetEventName));
+                break;
+            default:
+                break;
         }
     }
-}
-
+            // }
+    else {
+        console.log("\n\n parts not equal to 1 or 3?? \n\n")
+    }
+                        }
+console.log("Graph status: ", graph.status())
+                        
+                        

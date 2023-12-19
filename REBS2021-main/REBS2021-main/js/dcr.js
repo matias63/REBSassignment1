@@ -214,7 +214,7 @@ class DCRGraph {
         return (this.getEvent(n) !== undefined);
     }
 
-    getEvent(n)
+    getEvent(n) 
     {
         if (this.events.has(n))
             return this.events.get(n);
@@ -410,4 +410,5 @@ class DCRGraph {
 
   }
 
-  
+  module.exports = {DCRGraph, Marking, Event};
+ 
