@@ -10,7 +10,7 @@ const {DCRGraph, Marking, Event} = require('./dcr'); // You don't need to add th
 const { readCSV } = require('./csv_reader');
 
 // Give local path to .csv file, read it and store the relevant data in output.json
-filePathLog = 'enter\\Desktop\\Reactive and eventbased systems\\assignments\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
+filePathLog = 'enter\\Desktop\\Reactive and eventbased systems\\assignments\\REBSassignment1\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
 readCSV(filePathLog)
 
 // Read the JSON file
@@ -34,41 +34,33 @@ function createTracing(listOfLists)
 }
 
 
-
-// Save the variable in a .js file
-// const jsCode = `const myVariable = ${JSON.stringify(listOfLists)};`;
-
-// fs.writeFileSync('output.js', jsCode, 'utf-8');
-
-// console.log('Variable saved to output.js');
-
-// console.log(jsCode[0])
-
 // Create an instance of YourClass
 const graph = new DCRGraph();
 
-
-const event = new Event();
-event.events = [
-    "Fill_out_application(0,0,0)",        
-    "B(0,1,1)",        
-    "Fill_out_application -->* B",
-    "B *--> A",
-    "C -->% A",
-    "D -->+ A",    
-    "D -->* B",
-    "A --><> B",
-    "A --><> D"
+const ruleList = new Event()
+// const event = new Event();
+// event.events = [
+ruleList.events = [
+    "Fill_out_application(0,1,0)",        
+    "Review(0,0,1)",        
+    // "Fill_out_application -->* B",
+    // "B *--> A",
+    // "C -->% A",
+    // "D -->+ A",    
+    // "D -->* B",
+    "Fill_out_application *--> Review",
+    "Fill_out_application -->* Review"
+    // "Fill_out_application --><> Lawyer Review"
     ];
     // "A --><> (B, D)"];
+
+
 
 // R1 DCR
 // GraphR1.event = [
 //     "FillOutApplication -->* Other"
 // ]
 // console.log(event.events)
-
-
 // add events
 // graph.addEvent("A","A", m = {ex: false, in: false, pe: false})
 // graph.addEvent("B","B", m = {ex: false, in: true, pe: true})
@@ -92,9 +84,6 @@ event.events = [
 
 // KØR EVENT A
 
-
-
-
 // Har graphen ændret sig? burde B se anderledes ud?'
 // b er ikke pending længere? og a included 
 
@@ -104,10 +93,34 @@ event.events = [
 graph.addEvent(event) 
 */
 
-function dcrGraphCreator(csvFile) 
+
+/// iterær over en 1 rulesæt ad gangen og add event(relations) fra rulesæt
+/// itererer elementer i liste over Trace ID 1 gang for hver rule 
+/// ved et element fra tracelisten execute relation alle relations i rule
+/// ved ny rule eller nyt trace ID så nulstil alt
+    // // 1. find length of individual traces:
+// sum = 0
+// for (i = 1; i < listOfLists.length; i++){
+//     if (listOfLists[i-1][0] != listOfLists[i][0]){
+//         sum += 1
+// }
+    // // 2. actual thing
+// for (i = 0; i < sum; i++){
+//     for ( k = 0; k< rules.length; k++){ // for (rule in rules)
+//         graph.addEvent(relation) // add relations in ruleset
+//     }
+//     for (j in listOfLists[i]) {
+//         graph.addEvent(marking(listOfLists[j]));
+//         graph.execute(graph.getEvent(listOfLists[j]));
+//         if ( eventName == Marking) { // Listoflists[j-1][1]
+//             graph.execute(relation)
+//         }
+//     }
+// }
+function dcrGraphCreator(event, listOfLists) 
 {
     for (const e of event.events){
-        console.log("\n\nBefore adding relations: ", graph.status())
+        // console.log("\n\nBefore adding relations: ", graph.status())
 
         const parts = e.split(" ");
         // console.log("parts: ",parts)
@@ -118,7 +131,9 @@ function dcrGraphCreator(csvFile)
             
             // Adding an event with a marking
             graph.addEvent(markingParts[0], markingParts[0], m= {ex: markingParts[1] == 1, in: markingParts[2] == 1, pe: markingParts[3] == 1})
-
+            // console.log("\n\n:", markingParts[0], markingParts[1],markingParts[2],markingParts[3])
+            console.log("\n\n added marking: ", graph.status())
+            
         }
         
         
@@ -130,16 +145,17 @@ function dcrGraphCreator(csvFile)
             //     const targetEventName = parts[i].replace("(", "").replace(")","").replace(",", "")
             const targetEventName = parts[2]
 
-            if (!graph.hasEvent(eventName)) {
-                // console.log("EventName: ", eventName)
-                // console.log("Event exists NOT: ", !graph.hasEvent(eventName))
-                graph.addEvent(eventName)
-            }
-            if (!graph.hasEvent(targetEventName)) {
-                // console.log("TargetEventName: ", targetEventName)
-                // console.log("Event exists NOT: ", !graph.hasEvent(targetEventName))
-                graph.addEvent(targetEventName)
-            }
+            /// OUT-COMMENTED - i think this will bother the implementation of the rules
+            // if (!graph.hasEvent(eventName)) {
+            //     // console.log("EventName: ", eventName)
+            //     // console.log("Event exists NOT: ", !graph.hasEvent(eventName))
+            //     graph.addEvent(eventName)
+            // }
+            // if (!graph.hasEvent(targetEventName)) {
+            //     // console.log("TargetEventName: ", targetEventName)
+            //     // console.log("Event exists NOT: ", !graph.hasEvent(targetEventName))
+            //     graph.addEvent(targetEventName)
+            // }
             switch (relationType) {
                 case "-->*":
                     graph.addCondition(graph.getEvent(eventName), graph.getEvent(targetEventName));
@@ -159,42 +175,44 @@ function dcrGraphCreator(csvFile)
                 default:
                     break;
             }
-            // do this another place
-            // if (graph.getEvent(eventName).enabled()){
-            //     graph.execute(graph.getEvent(eventName));
-            // }
-            
-            
         }
-                // }
-                
         else {
             console.log("\n\n parts not equal to 1 or 3?? \n\n")
         }
-        console.log("\n\nGraph status after adding relation: ", graph.status())
+        // console.log("\n\nGraph status after adding relation: ", graph.status())
 
     }
-    // console.log("Graph status: ", graph.status())
+
+    // Trace passed variable - if false, the whole trace will be noted as failed
+    // list of failed traces to be displayed at the end
+    var trace_passed = true
+    var failed_traces = []
     for (i = 1; i < listOfLists.length; i++){
         if (listOfLists[i-1][0] != listOfLists[i][0]){
-            console.log("i: ", i)
+            // a new trace gets instanciated:
+            //  reset trace passed variable
+            trace_passed = true
+            // console.log("i: ", i)
         }
         else{
-            if (graph.getEvent(listOfLists[i-1][1]).enabled()){
+            // keep going through the same trace
+            // append failed trace IDs to the failed traces list
+            if (trace_passed == false){
+                failed_traces.push(listOfLists[i-1][0]);
+            }
+            // if (trace_passed == true && graph.getEvent(listOfLists[i-1][1]).enabled()){
+            if (trace_passed == true){
+                // if trace rule hasnt failed execute next element in trace
                 graph.execute(listOfLists[i-1][1]);
-            // console.log("\n\nhere\n\n")
+                listOfLists[i-1][1].executed = 0;
+                // console.log("\n\nhere\n\n")
             }
         }
     }    
-    // console.log(graph.status())
-}
-// fs.readFile(read_path, 'utf8', (err, data) => {
-//     if (err) {
-//     console.error(err);
-//     return;
-//     }
-// });
-// for (const i of csv)
-// console.log(data)
+    console.log("\n\n Execute Trace: ", graph.status())
 
-dcrGraphCreator(listOfLists)
+}
+
+
+// dcrGraphCreator(listOfLists)
+dcrGraphCreator(ruleList, listOfLists)
