@@ -14,17 +14,16 @@ const { DCRGraph } = require('./dcr'); // Adjust the path based on your file str
 // }
 
 function rule1(dcrGraph) {
-    const fillOutApplication = dcrGraph.addEvent('Fill_out_application');
-    const otherEvents = dcrGraph.events.values();
-    // const otherEvents = dcrGraph.events;
-    // console.log(otherEvents)
-    
-    if (otherEvents[1] !== fillOutApplication) {
-        console.log("R1 failed")
-        // dcrGraph.addExclude(fillOutApplication.name, event.name);
+    dcrGraph.addEvent('Fill_out_application');
+    const otherEvents = Array.from(dcrGraph.events);
+    console.log(otherEvents)
+
+    if ( fillOutApplication.name !== otherEvents[0]) {
+        console.log("R1 failed");
+        // Handle violation logic if needed
     }
-    
 }
+
 
 // Rule 2: Lawyer Review and Architect Review should never occur together.
 function rule2(dcrGraph) {

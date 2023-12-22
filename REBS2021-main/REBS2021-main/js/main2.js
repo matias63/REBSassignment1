@@ -8,7 +8,8 @@ const { readCSV } = require('./csv_reader');
 
 // Give local path to .csv file, read it and store the relevant data in output.json
 // filePathLog = 'enter\\Desktop\\Reactive and eventbased systems\\assignments\\REBSassignment1\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
-filePathLog = 'Mads-\\OneDrive - University of Copenhagen\\Uni\\2023\\REB\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
+filePathLog = 'enter\\Desktop\\Reactive and eventbased systems\\assignments\\REBSassignment1\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
+// filePathLog = 'Mads-\\OneDrive - University of Copenhagen\\Uni\\2023\\REB\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
 readCSV(filePathLog)
 
 // Read the JSON file
@@ -21,7 +22,7 @@ const jsonData = fs.readFileSync('output.json', 'utf-8');
 // ...
 
 function checkRules(listOfLists) {
-    let dcrGraph = new DCRGraph();
+    // let dcrGraph = new DCRGraph();
 
     
     // Add events and define DCR rules
@@ -42,7 +43,8 @@ function checkRules(listOfLists) {
         if (currentTrace !== traceId) {
             // Start of a new trace, reset DCR markings
             dcrGraph = new DCRGraph();
-            dcrGraph.addEvent(event)
+            // dcrGraph.addEvent(event)
+            // console.log(dcrGraph.getEvent(event))
             rule1(dcrGraph);
             // rule2(dcrGraph);
             // rule3(dcrGraph);
@@ -57,7 +59,7 @@ function checkRules(listOfLists) {
 
         // Execute the event in the DCR graph
         dcrGraph.execute(event);
-
+        
         // Check if any rule is violated after processing each event in the trace
         // for (let i = 1; i <= 8; i++) {
         for (let i = 1; i <= 1; i++) {
@@ -89,15 +91,15 @@ function checkRules(listOfLists) {
 // ];
 
 const listOfLists =[ 
-//     [
-//     "14b-460_1",
-//     "Fill_out_application"
-//   ]
-//   ,wa
-  [
+    [
     "14b-460_1",
-    "Approved_-_to_board"
+    "Fill_out_application"
   ]
+//   ,
+//   [
+//     "14b-460_1",
+//     "Approved_-_to_board"
+//   ],
 //   ,
 //   [
 //     "14b-460_1",

@@ -41,15 +41,16 @@ const ruleList = new Event()
 // const event = new Event();
 // event.events = [
 ruleList.events = [
-    "Fill_out_application(0,1,0)",        
-    "Review(0,0,1)",        
+    "A(0,1,0)",        
+    "B(0,1,0)",        
     // "Fill_out_application -->* B",
     // "B *--> A",
     // "C -->% A",
     // "D -->+ A",    
     // "D -->* B",
-    "Fill_out_application *--> Review",
-    "Fill_out_application -->* Review"
+    "A -->* B"
+    // "Fill_out_application -->+ Review",
+    // "Fill_out_application -->* Review"
     // "Fill_out_application --><> Lawyer Review"
     ];
     // "A --><> (B, D)"];
@@ -93,7 +94,7 @@ function dcrGraphCreator(event, listOfLists)
             // Adding an event with a marking
             graph.addEvent(markingParts[0], markingParts[0], m= {ex: markingParts[1] == 1, in: markingParts[2] == 1, pe: markingParts[3] == 1})
             // console.log("\n\n:", markingParts[0], markingParts[1],markingParts[2],markingParts[3])
-            console.log("\n\n added marking: ", graph.status())
+            // console.log("\n\n added marking: ", graph.status())
             
         }
         
@@ -119,19 +120,20 @@ function dcrGraphCreator(event, listOfLists)
             // }
             switch (relationType) {
                 case "-->*":
-                    graph.addCondition(graph.getEvent(eventName), graph.getEvent(targetEventName));
+                    graph.addCondition(eventName, targetEventName);
+                    console.log("-->*");
                     break;
                 case '*-->':
-                    graph.addResponse(graph.getEvent(eventName), graph.getEvent(targetEventName));
+                    graph.addResponse(eventName, targetEventName);
                     break;
                 case '-->%':
-                    graph.addMilestone(graph.getEvent(eventName), graph.getEvent(targetEventName));
+                    graph.addMilestone(eventName, targetEventName);
                     break;
                 case '-->+':
-                    graph.addInclude(graph.getEvent(eventName), graph.getEvent(targetEventName));
+                    graph.addInclude(eventName, targetEventName);
                     break;
                 case '--><>':
-                    graph.addMilestone(graph.getEvent(eventName),graph.getEvent(targetEventName));
+                    graph.addMilestone(eventName, targetEventName);
                     break;
                 default:
                     break;
@@ -140,33 +142,56 @@ function dcrGraphCreator(event, listOfLists)
         else {
             console.log("\n\n parts not equal to 1 or 3?? \n\n")
         }
-        // console.log("\n\nGraph status after adding relation: ", graph.status())
+        console.log("\n\nGraph status after adding relation: ", graph.status())
 
     }
 
-    // Trace passed variable - if false, the whole trace will be noted as failed
-    // list of failed traces to be displayed at the end
-    var trace_passed = true
-    var failed_traces = []
+
+
+    /// FIX DATA STRCUTURE
+    trace_dict = {}
+    for (i = 0; i < listOfLists.length; i++){
+        console.log("WHAT",listOfLists[i])
+        if (!trace_dict[listOfLists[i][0]]) {
+            trace_dict[listOfLists[i][0]] = [listOfLists[i][1]]
+        } else {
+            trace_dict[listOfLists[i][0]].push(listOfLists[i][1])
+        }
+    }
+    console.log(trace_dict)
+
+    for (const ID in trace_dict){
+
+        // HER ER DEN FÆRDIG MED ID iteration
+        if (!graph.isAccepting()) {
+            console.log("FAILS") 
+        } else {
+            console.log("PASS")
+        }
+    }
+
     for (i = 1; i < listOfLists.length; i++){
         if (listOfLists[i-1][0] != listOfLists[i][0]){
+            console.log("IF")
             // a new trace gets instanciated:
             //  reset trace passed variable
-            trace_passed = true
+            if (!graph.isAccepting()) {
+                console.log("FAILS")
+                failed_traces.push(listOfLists[i-1][0]);
+                trace_passed = false;
+            }
             // console.log("i: ", i)
         }
         else{
+            console.log("ELSE")
+
             // keep going through the same trace
-            // append failed trace IDs to the failed traces list
-            if (trace_passed == false){
-                failed_traces.push(listOfLists[i-1][0]);
-            }
+           
             // if (trace_passed == true && graph.getEvent(listOfLists[i-1][1]).enabled()){
             if (trace_passed == true){
                 // if trace rule hasnt failed execute next element in trace
                 graph.execute(listOfLists[i-1][1]);
-                listOfLists[i-1][1].executed = 0;
-                // console.log("\n\nhere\n\n")
+                console.log("\n\n executed",graph.status() ,"\n\n")
             }
         }
     }    
