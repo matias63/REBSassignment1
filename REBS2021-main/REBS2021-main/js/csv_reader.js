@@ -34,10 +34,10 @@ function readCSV(fileName) {
 
 // Specify the dynamic part of the file path
 // const fileNameComputer1 = 'Mads-\\OneDrive - University of Copenhagen\\Uni\\2023\\REB\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
-const fileNameComputer1 = 'enter\\Desktop\\Reactive and eventbased systems\\assignments\\REBSassignment1\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
+// const fileNameComputer1 = 'enter\\Desktop\\Reactive and eventbased systems\\assignments\\REBSassignment1\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
 
 // Call the readCSV function with the file name
-readCSV(fileNameComputer1);
+// readCSV(fileNameComputer1);
 
 module.exports =
   {

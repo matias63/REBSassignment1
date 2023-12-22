@@ -55,45 +55,6 @@ ruleList.events = [
     // "A --><> (B, D)"];
 
 
-
-// R1 DCR
-// GraphR1.event = [
-//     "FillOutApplication -->* Other"
-// ]
-// console.log(event.events)
-// add events
-// graph.addEvent("A","A", m = {ex: false, in: false, pe: false})
-// graph.addEvent("B","B", m = {ex: false, in: true, pe: true})
-// graph.addEvent("C")
-// graph.addEvent("D")
-
-// console.log("State before")
-// console.log(graph.status())
-
-// // add relations
-// graph.addCondition(graph.getEvent("A"), graph.getEvent("B"))
-// graph.addResponse(graph.getEvent("B"), graph.getEvent("A"))
-// graph.addExclude(graph.getEvent("C"), graph.getEvent("A"))
-// graph.addInclude(graph.getEvent("D"), graph.getEvent("A"))
-// graph.addCondition(graph.getEvent("D"), graph.getEvent("B"))
-// graph.addMilestone(graph.getEvent("A"), graph.getEvent("B"))
-// graph.addMilestone(graph.getEvent("A"), graph.getEvent("D"))
-
-// console.log("State after")
-// console.log(graph.status())
-
-// KØR EVENT A
-
-// Har graphen ændret sig? burde B se anderledes ud?'
-// b er ikke pending længere? og a included 
-
-
-// Use the instance or class as needed
-/*
-graph.addEvent(event) 
-*/
-
-
 /// iterær over en 1 rulesæt ad gangen og add event(relations) fra rulesæt
 /// itererer elementer i liste over Trace ID 1 gang for hver rule 
 /// ved et element fra tracelisten execute relation alle relations i rule
