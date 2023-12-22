@@ -38,52 +38,49 @@ console.log("Trace dict: ", trace_dict)
 
 
 const ruleList = new Event()
-// const event = new Event();
-// event.events = [
 ruleList.events = [ // EIP
-    "A(0,1,1)",        
-    "B(0,1,1)",        
+    "A(0,1,0)",        
+    "B(0,1,0)",        
     // "Fill_out_application -->* B",
     // "B *--> A",
     // "C -->% A",
     // "D -->+ A",    
     // "D -->* B",
-    "B --><> A"
+    "A *--> B"
     // "Fill_out_application -->+ Review",
     // "Fill_out_application -->* Review"
     // "Fill_out_application --><> Lawyer Review"
     ];
     // "A --><> (B, D)"];
 
+const rule1 = new Event()
+rule1.events = [
+    "Fill_out_application(0,1,0)",
+    "other_than_fill_out_application",
+    "Fill_out_application *--> other_than_fill_out_application"
+    ];
+
 function dcrGraphCreator(event) {
     
     graph = new DCRGraph();
 
     for (const e of event.events){
-
         const parts = e.split(" ");
-
         if (parts.length == 1){
             const markingParts = parts[0].replace(")","").split(/[,(]/);
             graph.addEvent(markingParts[0], markingParts[0], m= {ex: markingParts[1] == 1, in: markingParts[2] == 1, pe: markingParts[3] == 1})
-            
             console.log("Added event")
         }
         
-        
         else if (parts.length > 2) {
             console.log("Added relation")
-
             const eventName = parts[0] 
             const relationType = parts[1]
-
             const targetEventName = parts[2]
-
             switch (relationType) {
                 case "-->*":
                     graph.addCondition(eventName, targetEventName);
                     console.log("Added condition relation")
-
                     break;
                 case '*-->':
                     graph.addResponse(eventName, targetEventName);
@@ -105,37 +102,38 @@ function dcrGraphCreator(event) {
         else {
             console.log("\n\n parts not equal to 1 or 3?? \n\n")
         }
-
     }
-
     return graph;
 }
 
 
-DCR = dcrGraphCreator(ruleList)
-
-
 function check(){
-
     passed = 0
     failed = 0
-
     for (const ID in trace_dict){
         
-        for (const action in trace_dict[ID]){
+        for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
+            console.log("action" ,action)
+            // check if executing an excluded activity
+            if (!DCR.getEvent(action).marking.included && DCR.execute(action)) {
+                console.log("excluded: ", DCR.getEvent(action).marking.included)
+                failed +=1
+                break; 
+            }
             DCR.execute(action)
         } 
-
-        // HER ER DEN FÆRDIG MED ID iteration
         if (graph.isAccepting()) {
             passed += 1
             console.log("PASS")
-            
         } else {
             failed +=1
             console.log("FAILS") 
         }
     }
+    console.log("Passed: ", passed, "\nFailed: ",failed)
 }
 
+DCR = dcrGraphCreator(rule1)
 check()
+console.log(DCR.status())
+
