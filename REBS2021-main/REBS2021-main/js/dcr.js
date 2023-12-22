@@ -362,10 +362,11 @@ class DCRGraph {
 	
 	execute(e)
 	{
-        if (!this.hasEvent(e))
-            console.log("not in dcr",e);
-            return;
-        console.log("in dcr",e);
+        if (!this.hasEvent(e)){
+        // console.log("not in dcr",e)
+        return
+        }
+        // console.log("in dcr",e);
         this.getEvent(e).execute();
 	}
 	

@@ -4,7 +4,8 @@ const path = require('path');
 
 function readCSV(fileName) {
     // Define the base path
-    const basePath = 'C:\\Users\\';
+    // const basePath = 'C:\\Users\\';
+    const basePath = ""
 
     // Combine the base path with the dynamic part (fileName)
     const filePath = path.join(basePath, fileName);
