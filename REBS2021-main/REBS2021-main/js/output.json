@@ -1,11 +1,11 @@
 [
   [
     "14a-027_1",
-    "Fill_out_application"
+    "fill_out_application"
   ],
   [
     "14a-027_2",
-    "Fill_out_application"
+    "fill_out_application"
   ],
   [
     "14a-027_2",
@@ -13,22 +13,102 @@
   ],
   [
     "14a-027_3",
-    "Review"
+    "review"
   ],
   [
     "14a-027_4",
-    "Review"
+    "review"
   ],
   [
     "14a-027_4",
-    "Fill_out_application"
+    "fill_out_application"
   ],
   [
     "14a-027_5",
-    "Lawyer_Review"
+    "fill_out_application"
   ],
   [
     "14a-027_5",
-    "Architect_Review"
+    "other"
+  ],
+  [
+    "14a-027_5",
+    "lawyer_review"
+  ],
+  [
+    "14a-027_5",
+    "architect_review"
+  ],
+  [
+    "14a-027_6",
+    "change_phase_to_abort"
+  ],
+  [
+    "14a-027_6",
+    "reject"
+  ],
+  [
+    "14a-027_6",
+    "application_informed"
+  ],
+  [
+    "14a-027_7",
+    "first_payment"
+  ],
+  [
+    "14a-027_7",
+    "undo_payment"
+  ],
+  [
+    "14a-027_7",
+    "first_payment"
+  ],
+  [
+    "14a-027_7",
+    "first_payment"
+  ],
+  [
+    "14a-027_8",
+    "account_number_changed"
+  ],
+  [
+    "14a-027_8",
+    "first_payment"
+  ],
+  [
+    "14a-027_8",
+    "approve_changed_account"
+  ],
+  [
+    "14a-027_9",
+    "first_payment"
+  ],
+  [
+    "14a-027_9",
+    "change_phase_to_payout"
+  ],
+  [
+    "14a-027_10",
+    "change_phase_to_end_report"
+  ],
+  [
+    "14a-027_10",
+    "first_payment"
+  ],
+  [
+    "14a-027_10",
+    "change_phase_to_payout"
+  ],
+  [
+    "14a-027_11",
+    "change_phase_to_abandon"
+  ],
+  [
+    "14a-027_11",
+    "other"
+  ],
+  [
+    "14a-027_11",
+    "execute_abandon"
   ]
 ]

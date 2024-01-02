@@ -18,7 +18,7 @@ function readCSV(fileName) {
         }
 
         // Parse CSV content
-        const rows = data.split('\n');
+        const rows = data.toLowerCase().split('\n');
         const csvData = rows.map(row => row.split(';').map(cell => cell.trim().replace(/\s+/g, '_')));
 
         // Extract the first and third columns

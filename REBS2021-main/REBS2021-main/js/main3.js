@@ -77,19 +77,88 @@ rule1.events =
     //         ];
       
 const rule2 = new Event()
-
-    rule2.events = 
-    [
+rule2.events = [
+    // ///EASIER understanding of milestone setup  
+    // "Fill_out_application(0,1,0)",
+    // "Lawyer_Review",
+    // "other",
+    // "Architect_Review",
+    // "Fill_out_application -->* other",
+    // "other *--> Architect_Review",
+    // "other --><> Architect_Review"
     "Lawyer_Review",
-    "Architect_Review(0,1,1)",
-    "other",
-    "Lawyer_Review --><> Architect_review",
-    "Architect_Review --><> Lawyer_review",
-    "other -->* Lawyer_review",
-    "other -->* Architect_review"
-
-
+    "other(0,1,1)",
+    "Architect_Review",
+    "other *--> Lawyer_review",
+    "other *--> Architect_Review",
+    "other --><> Architect_Review",
+    "Lawyer_Review --><> Architect_Review"
     ];
+
+const rule3 = new Event()
+rule3.events = [
+    "application_informed",
+    "change_phase_to_abort",
+    "reject",
+    "reject *--> application_informed",
+    "reject *--> change_phase_to_abort"
+    ];
+
+const rule4 = new Event()
+rule4.events = [
+        "first_payment",
+        "undo_payment",
+        "first_payment -->% first_payment",
+        "undo_payment -->+ first_payment"
+        ];
+
+const rule5 = new Event()
+rule5.events = [
+    /// WORKS !!! first_payment doesnt have to be executed to be an accepting trace
+    "account_number_changed",
+    "first_payment",
+    "approve_changed_account",
+    "account_number_changed *--> approve_changed_account",
+    "approve_changed_account --><> first_payment"
+    // "approve_changed_account *--> first_payment",
+    ];
+
+const rule6 = new Event()
+rule6.events = [
+    "change_phase_to_payout",
+    "first_payment",
+    "change_phase_to_payout *--> first_payment",
+    "change_phase_to_payout -->* first_payment"
+    ];
+
+const rule7 = new Event()
+//// fails trace 9 + 10 (as it should)
+rule7.events = [
+    "change_phase_to_payout",
+    "first_payment",
+    "change_phase_to_end_report",
+    "change_phase_to_payout *--> first_payment",
+    "first_payment --><> change_phase_to_end_report"
+    ];
+
+const rule8 = new Event()
+
+rule8.events = [
+    "execute_abandon",
+    "change_phase_to_abandon",
+    "other",
+    "execute_abandon *-->% execute_abandon",
+    "execute_abandon -->% other"
+    ];
+
+// //// WORDLIST
+    // account_number_changed
+    // approve_changed_account
+    // first_payment
+    // change_phase_to_payout
+    // change_phase_to_end_report
+    // execute_abandon
+    // change_phase_to_abandon
 
 
 
@@ -183,6 +252,7 @@ function dcrGraphCreator(event) {
                     break;
                 case '*-->':
                     graph.addResponse(eventName, targetEventName);
+                    // graph.getEvent(targetEventName).marker.included = false;
                     console.log("Added response relation")
                     break;
                 case '-->%':
@@ -211,40 +281,51 @@ function check(){
     failed = 0
     for (const ID in trace_dict){
         // DCR = dcrGraphCreator(rule1)
-        DCR = dcrGraphCreator(rule2)
+        // DCR = dcrGraphCreator(rule2)
+        // DCR = dcrGraphCreator(rule3)
+        // DCR = dcrGraphCreator(rule4)
+        // DCR = dcrGraphCreator(rule5)
+        // DCR = dcrGraphCreator(rule6)
+        // DCR = dcrGraphCreator(rule7)
+        DCR = dcrGraphCreator(rule8)
+
 
         // DCR =  new DCRGraph();
         // ruleNr1(DCR);
         // ruleNr1()
         // ruleNr2()
-        for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
-            console.log("action" ,action)
-            // check if executing an excluded activity
-            // if (!DCR.getEvent(action).marking.included && DCR.execute(action)) {
-            // console.log("\n\n",graph.getEvent(action) ,"\n\n")    
-            if (DCR.getEvent(action) == undefined)  {
-                DCR.execute("other")
-            }
-            else {
-                if (!DCR.getEvent(action).marking.included) {
-                    console.log("excluded: ", DCR.getEvent(action).marking.included)
-                    failed +=1
-                    break; 
+        
+            for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
+                console.log("action" ,action)
+                // check if executing an excluded activity
+                // if (!DCR.getEvent(action).marking.included && DCR.execute(action)) {
+                // console.log("\n\n",graph.getEvent(action) ,"\n\n")    
+                if (DCR.getEvent(action) == undefined)  {
+                    DCR.execute("other")
                 }
-                DCR.execute(action)
+                else {
+                    if (!DCR.getEvent(action).marking.included) {
+                        console.log("excluded: ", DCR.getEvent(action).marking.included)
+                        failed +=1
+                        break; 
+                    }
+                    DCR.execute(action)
+                }
+            } 
+            if (DCR.isAccepting()) {
+                passed += 1
+                console.log("PASS")
+            } else {
+                failed +=1
+                console.log("FAILS") 
             }
-        } 
-        if (DCR.isAccepting()) {
-            passed += 1
-            console.log("PASS")
-        } else {
-            failed +=1
-            console.log("FAILS") 
+            console.log(DCR.status())
         }
-        console.log(DCR.status())
-    }
-    console.log("Passed: ", passed, "\nFailed: ",failed)
-
+        // rule 4 ||rule 7 || rule 8 can both fail a trace, but also have an isAccepting trace (surcomvent the math) (MILESTONE ERROR!!!!!)
+        if (passed + failed > Object.keys(trace_dict).length ) {
+            passed -= failed
+        }
+        console.log("Passed: ", passed, "\nFailed: ",failed)
 }
 
 // DCR = dcrGraphCreator(rule1)
