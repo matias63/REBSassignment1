@@ -1,4 +1,9 @@
 ID;Event;Title;Role;Date;EventName;EventTypeLawyer
-14a-027_0;DL_WFCaseTypeStep|497;A;Ansøger;2013-12-25 12:36:38.987;A;Task
-14a-027_2;DL_WFCaseTypeStep|497;A;Ansøger;2013-12-25 12:36:38.987;A;Task
-14a-027_2;DL_WFCaseTypeStep|497;B;Ansøger;2013-12-25 12:36:38.987;B;Task
+14a-027_1;DL_WFCaseTypeStep|497;Fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+14a-027_2;DL_WFCaseTypeStep|497;Fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+14a-027_2;DL_WFCaseTypeStep|497;other;Ansøger;2013-12-25 12:36:38.987;B;Task
+14a-027_3;DL_WFCaseTypeStep|497;Review;Ansøger;2013-12-25 12:36:38.987;B;Task
+14a-027_4;DL_WFCaseTypeStep|497;Review;Ansøger;2013-12-25 12:36:38.987;B;Task
+14a-027_4;DL_WFCaseTypeStep|497;Fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+14a-027_5;DL_WFCaseTypeStep|497;Lawyer_Review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+14a-027_5;DL_WFCaseTypeStep|497;Architect_Review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task

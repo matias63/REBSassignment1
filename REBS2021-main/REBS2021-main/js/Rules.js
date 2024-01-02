@@ -13,15 +13,31 @@ const { DCRGraph } = require('./dcr'); // Adjust the path based on your file str
 //     }
 // }
 
-function rule1(dcrGraph) {
-    dcrGraph.addEvent('Fill_out_application');
-    const otherEvents = Array.from(dcrGraph.events);
-    console.log(otherEvents)
+// function rule1(dcrGraph) {
+//     dcrGraph.addEvent('Fill_out_application');
+//     const otherEvents = Array.from(dcrGraph.events);
+//     console.log(otherEvents)
 
-    if ( fillOutApplication.name !== otherEvents[0]) {
-        console.log("R1 failed");
-        // Handle violation logic if needed
-    }
+//     if ( fillOutApplication.name !== otherEvents[0]) {
+//         console.log("R1 failed");
+//         // Handle violation logic if needed
+//     }
+// }
+
+function rule1() {
+return    [ // EIP
+    "A(0,1,0)",        
+    "B(0,1,0)",        
+    // "Fill_out_application -->* B",
+    // "B *--> A",
+    // "C -->% A",
+    // "D -->+ A",    
+    // "D -->* B",
+    "A *--> B"
+    // "Fill_out_application -->+ Review",
+    // "Fill_out_application -->* Review"
+    // "Fill_out_application --><> Lawyer Review"
+    ];
 }
 
 

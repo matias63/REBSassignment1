@@ -56,12 +56,11 @@ ruleList.events = [ // EIP
     // "A --><> (B, D)"];
 
 const rule1 = new Event()
-
 rule1.events = 
     [
     "Fill_out_application(0,1,0)",
-    "other_than_fill_out_application",
-    "Fill_out_application *--> other_than_fill_out_application"
+    "other",
+    "Fill_out_application *--> other"
     ];
     // [ // EIP
     //         "A(0,1,0)",        
@@ -77,72 +76,70 @@ rule1.events =
     //         // "Fill_out_application --><> Lawyer Review"
     //         ];
       
+const rule2 = new Event()
+
+    rule2.events = 
+    [
+    "Lawyer_Review",
+    "Architect_Review(0,1,1)",
+    "other",
+    "Lawyer_Review --><> Architect_review",
+    "Architect_Review --><> Lawyer_review",
+    "other -->* Lawyer_review",
+    "other -->* Architect_review"
 
 
-// function ruleNr1(graph) {
+    ];
+
+
+
+// function ruleNr1() {
+//     pass = 0
+//     fail = 0
+//     graph =  new DCRGraph();
 //     const fillOutApplication = 'Fill_out_application'
-//     // graph.addEvent(fillOutApplication);
-//     for (const Role in trace_dict){
-//         const otherEvents = trace_dict[Role];
+//     graph.addEvent(fillOutApplication);
+//     for (const ID in trace_dict){
+//         const otherEvents = trace_dict[ID];
 //         console.log("ADDING EVENT: \n", otherEvents)
-//         for (const e of otherEvents){
-//             graph.addEvent(e)
-//             console.log(e)
-//         }
-        
-//         if ( fillOutApplication !== otherEvents[0]) {
+//         // for (const e of otherEvents){
+//         //     // graph.addEvent(e)
+//         //     // console.log(e)
+//         // }
+//         // console.log("Otherevents:", otherEvents)
+//         console.log("Otherevents[0]:", otherEvents[0])
+//         if (fillOutApplication !== otherEvents[0]) {
 //             console.log("R1 failed");
+//             fail += 1
 //         }
+//         pass += 1
 //     }
+//     console.log(" RULE1: pass", pass - failed, "failed", failed)
+//     console.log(graph.status())
 // }
 
-function ruleNr1() {
-    pass = 0
-    fail = 0
-    graph =  new DCRGraph();
-    const fillOutApplication = 'Fill_out_application'
-    graph.addEvent(fillOutApplication);
-    for (const ID in trace_dict){
-        const otherEvents = trace_dict[ID];
-        console.log("ADDING EVENT: \n", otherEvents)
-        // for (const e of otherEvents){
-        //     // graph.addEvent(e)
-        //     // console.log(e)
-        // }
-        // console.log("Otherevents:", otherEvents)
-        console.log("Otherevents[0]:", otherEvents[0])
-        if (fillOutApplication !== otherEvents[0]) {
-            console.log("R1 failed");
-            fail += 1
-        }
-        pass += 1
-    }
-    console.log(" RULE1: pass", pass - failed, "failed", failed)
-    console.log(graph.status())
-}
-
-function ruleNr2() {
-    pass = 0
-    fail = 0
-    graph =  new DCRGraph();
-    graph.addEvent('Architect_review');
-    graph.addEvent('Lawyer_review');
-    if(graph.getEvent('Architect_review').marking.pending && !graph.getEvent('Lawyer_review').marking.pending) {
-        graph.getEvent('Lawyer_review').marking.included = false
-    }
-    if(graph.getEvent('Lawyer_review').marking.pending && !graph.getEvent('Architect_review').marking.pending) {
-        graph.getEvent('Architect_review').marking.included = false
-    }
-    if(graph.getEvent('Lawyer_review').marking.executed || graph.getEvent('Architect_review').marking.executed){
-        // enabled or included ?????
-        graph.getEvent('Lawyer_review').marking.included = true
-        graph.getEvent('Architect_review').marking.included = true
-    }
-}
-    for (const ID in trace_dict){
-        const otherEvents = trace_dict[ID];
-        console.log("ADDING EVENT: \n", otherEvents)
-    }
+// function ruleNr2() {
+//     pass = 0
+//     fail = 0
+//     graph =  new DCRGraph();
+//     graph.addEvent('Architect_review');
+//     graph.addEvent('Lawyer_review');
+//     if(graph.getEvent('Architect_review').marking.pending && !graph.getEvent('Lawyer_review').marking.pending) {
+//         graph.getEvent('Lawyer_review').marking.included = false
+//     }
+//     if(graph.getEvent('Lawyer_review').marking.pending && !graph.getEvent('Architect_review').marking.pending) {
+//         graph.getEvent('Architect_review').marking.included = false
+//     }
+//     if(graph.getEvent('Lawyer_review').marking.executed || graph.getEvent('Architect_review').marking.executed){
+//         // enabled or included ?????
+//         graph.getEvent('Lawyer_review').marking.included = true
+//         graph.getEvent('Architect_review').marking.included = true
+//     }
+// }
+//     for (const ID in trace_dict){
+//         const otherEvents = trace_dict[ID];
+//         console.log("ADDING EVENT: \n", otherEvents)
+//     }
 
         // for (const ID in trace_dict){
         //     const otherEvents = Array.from(trace_dict[ID]);
@@ -212,32 +209,40 @@ function dcrGraphCreator(event) {
 function check(){
     passed = 0
     failed = 0
-    // for (const ID in trace_dict){
+    for (const ID in trace_dict){
         // DCR = dcrGraphCreator(rule1)
+        DCR = dcrGraphCreator(rule2)
+
         // DCR =  new DCRGraph();
         // ruleNr1(DCR);
-        ruleNr1()
-        ruleNr2()
-        // for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
-        //     console.log("action" ,action)
-        //     // check if executing an excluded activity
-        //     // if (!DCR.getEvent(action).marking.included && DCR.execute(action)) {
-        //     if (!DCR.getEvent(action).marking.included) {
-        //         console.log("excluded: ", DCR.getEvent(action).marking.included)
-        //         failed +=1
-        //         break; 
-        //     }
-        //     DCR.execute(action)
-        // } 
-        // if (DCR.isAccepting()) {
-        //     passed += 1
-        //     console.log("PASS")
-        // } else {
-        //     failed +=1
-        //     console.log("FAILS") 
-        // }
-        // console.log(DCR.status())
-    // }
+        // ruleNr1()
+        // ruleNr2()
+        for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
+            console.log("action" ,action)
+            // check if executing an excluded activity
+            // if (!DCR.getEvent(action).marking.included && DCR.execute(action)) {
+            // console.log("\n\n",graph.getEvent(action) ,"\n\n")    
+            if (DCR.getEvent(action) == undefined)  {
+                DCR.execute("other")
+            }
+            else {
+                if (!DCR.getEvent(action).marking.included) {
+                    console.log("excluded: ", DCR.getEvent(action).marking.included)
+                    failed +=1
+                    break; 
+                }
+                DCR.execute(action)
+            }
+        } 
+        if (DCR.isAccepting()) {
+            passed += 1
+            console.log("PASS")
+        } else {
+            failed +=1
+            console.log("FAILS") 
+        }
+        console.log(DCR.status())
+    }
     console.log("Passed: ", passed, "\nFailed: ",failed)
 
 }
