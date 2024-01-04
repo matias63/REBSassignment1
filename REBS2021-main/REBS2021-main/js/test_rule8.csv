@@ -1,0 +1,7 @@
+ID;Event;Title;Role;Date;EventName;EventTypeLawyer
+rule8pass;DL_WFCaseTypeStep|497;change_phase_to_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8pass;DL_WFCaseTypeStep|497;other;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8pass;DL_WFCaseTypeStep|497;execute_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8fail;DL_WFCaseTypeStep|497;change_phase_to_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8fail;DL_WFCaseTypeStep|497;other;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8fail;DL_WFCaseTypeStep|497;execute_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task

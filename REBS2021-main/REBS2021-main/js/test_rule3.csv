@@ -1,0 +1,7 @@
+ID;Event;Title;Role;Date;EventName;EventTypeLawyer
+rule3fail;DL_WFCaseTypeStep|497;change_phase_to_abort;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule3fail;DL_WFCaseTypeStep|497;reject;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule3fail;DL_WFCaseTypeStep|497;applicant_informed;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule3pass;DL_WFCaseTypeStep|497;reject;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule3pass;DL_WFCaseTypeStep|497;change_phase_to_abort;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule3pass;DL_WFCaseTypeStep|497;applicant_informed;2013-12-25 12:36:38.987;Fill_out_application;Task

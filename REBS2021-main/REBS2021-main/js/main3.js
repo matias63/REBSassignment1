@@ -119,7 +119,7 @@ function dcrGraphCreator(event) {
                 graph.addEvent(markingParts[0], markingParts[0], m= {ex: markingParts[1] == 1, in: markingParts[2] == 1, pe: markingParts[3] == 1})
             }
             // console.log("Added event")
-        } else if (parts.length > 2) {
+        } else if (parts.length = 3) {
             // console.log("Added relation")
             const eventName = parts[0] 
             const relationType = parts[1]
@@ -170,7 +170,10 @@ function check(rules){
             for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
                 // console.log("action" ,action)
                 if (DCR.getEvent(action) == undefined)  {
-                    // DCR.execute("other")
+                    if (DCR.getEvent("other") == undefined){
+                        DCR.addEvent("other")
+                    }
+                    DCR.execute("other")
                 } else {
                     // fail if executing an excluded activity and break to next rule
                     if (!DCR.getEvent(action).marking.included) {
@@ -180,7 +183,7 @@ function check(rules){
                     }
                     DCR.execute(action)
                 }
-            } 
+            }
             if (DCR.isAccepting()) {
                 curr_rule_passed += 1
                 // console.log("PASS")
@@ -203,11 +206,12 @@ function check(rules){
     // console.log("\nCount_Total_traces in dreyers log ",trace_count/rules.length)
     // console.log("Total_traces : ", total_pass+total_fail/rules.length)
     console.log("traces run: ",trace_count/rules.length,"/",(total_pass+total_fail)/rules.length)
+    
     }
 
 
 
-    
+
 readCSV("log.csv")
 
 // Read the JSON file

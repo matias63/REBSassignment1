@@ -1,14 +1,17 @@
 ID;Event;Title;Role;Date;EventName;EventTypeLawyer
-14a-027_1;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
-14a-027_2;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
-14a-027_2;DL_WFCaseTypeStep|497;other;Ansøger;2013-12-25 12:36:38.987;B;Task
-14a-027_3;DL_WFCaseTypeStep|497;review;Ansøger;2013-12-25 12:36:38.987;B;Task
-14a-027_4;DL_WFCaseTypeStep|497;review;Ansøger;2013-12-25 12:36:38.987;B;Task
-14a-027_4;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
-14a-027_5;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
-14a-027_5;DL_WFCaseTypeStep|497;other;ansøger;2013-12-25 12:36:38.987;B;Task
-14a-027_5;DL_WFCaseTypeStep|497;lawyer_review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
-14a-027_5;DL_WFCaseTypeStep|497;architect_review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule1pass;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule1pass2;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule1pass2;DL_WFCaseTypeStep|497;other;Ansøger;2013-12-25 12:36:38.987;B;Task
+rule1fail;DL_WFCaseTypeStep|497;review;Ansøger;2013-12-25 12:36:38.987;B;Task
+
+
+rule2fail;DL_WFCaseTypeStep|497;other;ansøger;2013-12-25 12:36:38.987;B;Task
+rule2fail;DL_WFCaseTypeStep|497;lawyer_review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule2fail;DL_WFCaseTypeStep|497;architect_review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+
+rule2pass;DL_WFCaseTypeStep|497;other;ansøger;2013-12-25 12:36:38.987;B;Task
+rule2pass;DL_WFCaseTypeStep|497;lawyer_review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+
 14a-027_6;DL_WFCaseTypeStep|497;change_phase_to_abort;2013-12-25 12:36:38.987;Fill_out_application;Task
 14a-027_6;DL_WFCaseTypeStep|497;reject;2013-12-25 12:36:38.987;Fill_out_application;Task
 14a-027_6;DL_WFCaseTypeStep|497;application_informed;2013-12-25 12:36:38.987;Fill_out_application;Task
@@ -24,9 +27,6 @@ ID;Event;Title;Role;Date;EventName;EventTypeLawyer
 14a-027_10;DL_WFCaseTypeStep|497;change_phase_to_end_report;2013-12-25 12:36:38.987;Fill_out_application;Task
 14a-027_10;DL_WFCaseTypeStep|497;first_payment;2013-12-25 12:36:38.987;Fill_out_application;Task
 14a-027_10;DL_WFCaseTypeStep|497;change_phase_to_payout;2013-12-25 12:36:38.987;Fill_out_application;Task
-14a-027_11;DL_WFCaseTypeStep|497;change_phase_to_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
-14a-027_11;DL_WFCaseTypeStep|497;other;2013-12-25 12:36:38.987;Fill_out_application;Task
-14a-027_11;DL_WFCaseTypeStep|497;execute_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
 14b-631_1;DL_WFCaseTypeStep|485;Round approved;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
 14b-631_1;DL_WFCaseTypeStep|485;fill out application;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
 14b-631_3;DL_WFCaseTypeStep|485;reject;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
@@ -37,3 +37,10 @@ ID;Event;Title;Role;Date;EventName;EventTypeLawyer
 14b-631_7;DL_WFCaseTypeStep|485;reject;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
 14b-631_7;DL_WFCaseTypeStep|485;applicant informed;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
 14b-631_7;DL_WFCaseTypeStep|485;change phase to abort;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+
+rule8pass;DL_WFCaseTypeStep|497;change_phase_to_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8pass;DL_WFCaseTypeStep|497;other;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8pass;DL_WFCaseTypeStep|497;execute_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8fail;DL_WFCaseTypeStep|497;change_phase_to_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8fail;DL_WFCaseTypeStep|497;other;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule8fail;DL_WFCaseTypeStep|497;execute_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task

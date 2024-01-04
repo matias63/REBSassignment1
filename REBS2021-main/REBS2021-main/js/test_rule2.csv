@@ -1,0 +1,6 @@
+ID;Event;Title;Role;Date;EventName;EventTypeLawyer
+rule2fail;DL_WFCaseTypeStep|497;other;ansøger;2013-12-25 12:36:38.987;B;Task
+rule2fail;DL_WFCaseTypeStep|497;lawyer_review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule2fail;DL_WFCaseTypeStep|497;architect_review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule2pass;DL_WFCaseTypeStep|497;other;ansøger;2013-12-25 12:36:38.987;B;Task
+rule2pass;DL_WFCaseTypeStep|497;lawyer_review;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task

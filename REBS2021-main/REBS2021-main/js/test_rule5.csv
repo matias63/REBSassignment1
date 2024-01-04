@@ -1,0 +1,12 @@
+ID;Event;Title;Role;Date;EventName;EventTypeLawyer
+rule5fail;DL_WFCaseTypeStep|497;account_number_changed;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5fail;DL_WFCaseTypeStep|497;first_payment;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5fail;DL_WFCaseTypeStep|497;approve_changed_account;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5fail2;DL_WFCaseTypeStep|497;account_number_changed;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5fail2;DL_WFCaseTypeStep|497;first_payment;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5pass;DL_WFCaseTypeStep|497;account_number_changed;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5pass;DL_WFCaseTypeStep|497;approve_changed_account;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5pass;DL_WFCaseTypeStep|497;first_payment;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5pass2;DL_WFCaseTypeStep|497;first_payment;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5pass2;DL_WFCaseTypeStep|497;account_number_changed;2013-12-25 12:36:38.987;Fill_out_application;Task
+rule5pass2;DL_WFCaseTypeStep|497;approve_changed_account;2013-12-25 12:36:38.987;Fill_out_application;Task
