@@ -37,36 +37,40 @@ console.log("Trace dict: ", trace_dict)
 const rule1 = new Event()
 rule1.events = 
     [
-    "fill_out_application(0,1,0)",
+    "fill_out_application",
     "other",
-    "fill_out_application *--> other"
+    "fill_out_application -->* other"
     ];
       
 const rule2 = new Event()
 rule2.events = [
-    // ///EASIER understanding of milestone testing outcommented  
-    // "fill_out_application(0,1,0)",
-    // "lawyer_review",
-    // "other",
-    // "architect_review",
-    // "fill_out_application -->* other",
-    // "other *--> architect_Review",
-    // "other --><> architect_Review"
+    // ///EASIER understanding of milestone testing outcommented:  
+        // "fill_out_application(0,1,0)",
+        // "lawyer_review",
+        // "other",
+        // "architect_review",
+        // "fill_out_application -->* other",
+        // "other *--> architect_Review",
+        // "other --><> architect_Review"
+
+    /////// outcommented: goes from passed/failed =  0/594 to   304/ 290   (the outmarked was if it was milestones)
     "lawyer_review",
-    "other(0,1,1)",
+    // "other",
     "architect_review",
-    "other *--> lawyer_review",
-    "other *--> architect_review",
-    "other --><> architect_review",
-    "lawyer_review --><> architect_review"
+    // "other *--> lawyer_review",
+    // "other *--> architect_review",
+    "architect_review -->% lawyer_review",
+    "lawyer_review -->% architect_review"
+    // "architect_review --><> lawyer_review",
+    // "lawyer_review --><> architect_review"
     ];
 
 const rule3 = new Event()
 rule3.events = [
-    "application_informed",
+    "applicant_informed",
     "change_phase_to_abort",
     "reject",
-    "reject *--> application_informed",
+    "reject *--> applicant_informed",
     "reject *--> change_phase_to_abort"
     ];
 
@@ -112,7 +116,7 @@ rule8.events = [
     "execute_abandon",
     "change_phase_to_abandon",
     "other",
-    "execute_abandon *-->% execute_abandon",
+    "execute_abandon -->% execute_abandon",
     "execute_abandon -->% other"
     ];
 
@@ -168,49 +172,56 @@ function dcrGraphCreator(event) {
 }
 
 
-function check(){
+function check(rules){
     let total_pass = 0
     let total_fail = 0
-    let rules =[rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8];
+    let trace_count = 0
     for (let i = 1; i < rules.length+1; i++) {      // Iterate through rules
         const currentRule = rules[i-1];  // Displays element 0 as element 1 for simplicity
         curr_rule_passed = 0
         curr_rule_failed = 0      
         DCR = dcrGraphCreator(currentRule);
         for (const ID in trace_dict){
-                for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
-                    // console.log("action" ,action)
-                    if (DCR.getEvent(action) == undefined)  {
-                        DCR.execute("other")
-                    } else {
-                        // fail if executing an excluded activity and break to next rule
-                        if (!DCR.getEvent(action).marking.included) {
-                            console.log("excluded: ", DCR.getEvent(action).marking.included)
-                            curr_rule_failed +=1
-                            break; 
-                        }
-                        DCR.execute(action)
-                    }
-                } 
-                if (DCR.isAccepting()) {
-                    curr_rule_passed += 1
-                    // console.log("PASS")
+            trace_count +=1
+            for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
+                // console.log("action" ,action)
+                if (DCR.getEvent(action) == undefined)  {
+                    DCR.execute("other")
                 } else {
-                    curr_rule_failed +=1
-                    // console.log("FAILS") 
+                    // fail if executing an excluded activity and break to next rule
+                    if (!DCR.getEvent(action).marking.included) {
+                        console.log("excluded: ", DCR.getEvent(action).marking.included)
+                        curr_rule_failed +=1
+                        break; 
+                    }
+                    DCR.execute(action)
                 }
-                // console.log(DCR.status())    // TO SEE DCR GRAPH
+            } 
+            if (DCR.isAccepting()) {
+                curr_rule_passed += 1
+                // console.log("PASS")
+            } else {
+                curr_rule_failed +=1
+                // console.log("FAILS") 
             }
-            // MILESTONE ERROR!!!!! (fails and passes counting)
-            // rule 4 ||rule 7 || rule 8 can both fail a trace, but also have an isAccepting trace (surcomvents the math to consider the error)
-            if (curr_rule_passed + curr_rule_failed > Object.keys(trace_dict).length ) {
-                curr_rule_passed -= curr_rule_failed
-            }
-            console.log("Rule:",i, "\nPassed: ", curr_rule_passed, "\nFailed: ",curr_rule_failed)
-            total_pass += curr_rule_passed
-            total_fail += curr_rule_failed
+            // console.log(DCR.status())    // TO SEE DCR GRAPH
+        }
+        // MILESTONE ERROR!!!!! (fails and passes counting)
+        // rule 4 ||rule 7 || rule 8 can both fail a trace, but also have an isAccepting trace (surcomvents the math to consider the error)
+        if (curr_rule_passed + curr_rule_failed > Object.keys(trace_dict).length ) {
+            curr_rule_passed -= curr_rule_failed
+        }
+        console.log("Rule:",i, "\nPassed: ", curr_rule_passed, "\nFailed: ",curr_rule_failed)
+        total_pass += curr_rule_passed
+        total_fail += curr_rule_failed
         }
     console.log("\nTotal_Passed: ", total_pass, "\nTotal_Failed: ",total_fail)
-    }
+    console.log("\nTotal_traces ",trace_count)
+    console.log("\nTotal_traces for us: ", total_pass+total_fail)
 
-check()
+    
+
+    }
+let rulelist =[rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8];
+
+check(rulelist)
