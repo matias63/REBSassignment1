@@ -8,10 +8,6 @@ const path = require('path');
 const {DCRGraph, Marking, Event} = require('./dcr'); // You don't need to add the '.js' extension
 // import {readCSV} from './csv_reader';
 const { readCSV } = require('./csv_reader');
-const { fail } = require('assert');
-
-
-
 
 function create_trace_dict(listOfLists){
     /// Convert list to dictionary
@@ -26,8 +22,6 @@ function create_trace_dict(listOfLists){
     // console.log("Trace dict: ", trace_dict)    // DISPLAY TRACE DICTIONARY
     return trace_dict
 }
-
-
 
 const rule1 = new Event()
 rule1.events = [
@@ -75,7 +69,6 @@ rule5.events = [
     "approve_changed_account",
     "account_number_changed *--> approve_changed_account",
     "approve_changed_account --><> first_payment"
-    // "approve_changed_account *--> first_payment",
     ];
 
 const rule6 = new Event()
@@ -115,38 +108,28 @@ function dcrGraphCreator(event) {
             const markingParts = parts[0].replace(")","").split(/[,(]/);
             if (markingParts.length == 1) {
                 graph.addEvent(markingParts[0])
-                // console.log(graph.getEvent(markingParts[0]))
             } else {
                 graph.addEvent(markingParts[0], l= markingParts[0], m= {ex: markingParts[1] == 1, in: markingParts[2] == 1, pe: markingParts[3] == 1})
             }
-            // console.log("Added event")
         } else if (parts.length = 3) {
-            // console.log("Added relation")
             const eventName = parts[0] 
             const relationType = parts[1]
             const targetEventName = parts[2]
             switch (relationType) {
                 case "-->*":
                     graph.addCondition(eventName, targetEventName);
-                    // console.log("here")
-                    // console.log(graph.status())
-                    // console.log("Added condition relation")
                     break;
                 case '*-->':
                     graph.addResponse(eventName, targetEventName);
-                    // console.log("Added response relation")
                     break;
                 case '-->%':
                     graph.addExclude(eventName, targetEventName);
-                    // console.log("Added exclude relation")
                     break;
                 case '-->+':
                     graph.addInclude(eventName, targetEventName);
-                    // console.log("Added include relation")
                     break;
                 case '--><>':
                     graph.addMilestone(eventName, targetEventName);
-                    // console.log("Added milestone relation")
                     break;
                 default:
                     break;
@@ -157,7 +140,6 @@ function dcrGraphCreator(event) {
     }
     return graph;
 }
-
 
 function check(rules){
     let total_pass = 0
@@ -171,7 +153,6 @@ function check(rules){
             DCR = dcrGraphCreator(currentRule);
             trace_count +=1
             for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
-                // console.log("action" ,action)
                 if (DCR.getEvent(action) == undefined)  {
                     if (DCR.getEvent("other") == undefined){
                         DCR.addEvent("other")
@@ -180,7 +161,6 @@ function check(rules){
                 } else {
                     // fail if executing an excluded activity and break to next rule
                     if (!DCR.getEvent(action).marking.included) {
-                        // console.log("excluded: ", DCR.getEvent(action).marking.included)   /// doesnt show the marking getting excluded
                         curr_rule_failed +=1
                         break; 
                     }
@@ -189,12 +169,9 @@ function check(rules){
             }
             if (DCR.isAccepting()) {
                 curr_rule_passed += 1
-                // console.log("PASS")
             } else {
                 curr_rule_failed +=1
-                // console.log("FAILS") 
             }
-            // console.log(DCR.status())    // TO SEE DCR GRAPH
         }
         // MILESTONE ERROR!!!!! (fails and passes counting)
         // rule 4 ||rule 7 || rule 8 can both fail a trace, but also have an isAccepting trace (surcomvents the math to consider the error)
@@ -206,50 +183,11 @@ function check(rules){
         total_fail += curr_rule_failed
         }
     console.log("\nTotal \t \t Passed: ", total_pass, "\t Failed: ",total_fail)
-    // console.log("\nCount_Total_traces in dreyers log ",trace_count/rules.length)
-    // console.log("Total_traces : ", total_pass+total_fail/rules.length)
     console.log("traces run: ",trace_count/rules.length,"/",(total_pass+total_fail)/rules.length)
     
     }
 
-
-
-
-// readCSV("log.csv")
-
-// Read the JSON file
-// const jsonData = fs.readFileSync('output.json', 'utf-8');
-
-// // Parse the JSON data
-// const listOfLists = JSON.parse(jsonData);
-
-// create_trace_dict(listOfLists)
-// let rulelist =[rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8];
-// check(rulelist)
-//  
 const args = process.argv.slice(2);
-
-// Process each CSV file
-// args.forEach((csvFile, index) => {
-//     console.log(`\n\nRunning tests for CSV file ${index + 1}: ${csvFile}`);
-    
-//     // Read the CSV file
-//     readCSV(csvFile);
-
-//     // Read the JSON file
-//     const jsonData = fs.readFileSync('output.json', 'utf-8');
-
-//     // Parse the JSON data
-//     const listOfLists = JSON.parse(jsonData);
-//     // Create trace dictionary
-//     create_trace_dict(listOfLists);
-
-//     // Run the checks for the rules
-//     let rulelist = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8];
-//     // let rulelist = [rule1, rule2, rule3, rule4];
-//     check(rulelist);
-// });
-
 // Ensure there are enough arguments
 if (args.length < 2) {
     console.error('Usage: node main3.js <csvFile> <ruleNumbers>');
