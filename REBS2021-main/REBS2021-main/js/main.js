@@ -19,7 +19,6 @@ function create_trace_dict(listOfLists){
             trace_dict[listOfLists[i][0]].push(listOfLists[i][1])
         }
     }
-    // console.log("Trace dict: ", trace_dict)    // DISPLAY TRACE DICTIONARY
     return trace_dict
 }
 
