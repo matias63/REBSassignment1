@@ -3,3 +3,4 @@ rule1pass;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:3
 rule1pass2;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:38.987;Fill_out_application;Task
 rule1pass2;DL_WFCaseTypeStep|497;other;Ansøger;2013-12-25 12:36:38.987;B;Task
 rule1fail;DL_WFCaseTypeStep|497;review;Ansøger;2013-12-25 12:36:38.987;B;Task
+rule1fail;DL_WFCaseTypeStep|497;fill_out_application;Ansøger;2013-12-25 12:36:38.987;B;Task

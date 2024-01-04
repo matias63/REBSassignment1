@@ -8,156 +8,105 @@ const path = require('path');
 const {DCRGraph, Marking, Event} = require('./dcr'); // You don't need to add the '.js' extension
 // import {readCSV} from './csv_reader';
 const { readCSV } = require('./csv_reader');
+const { fail } = require('assert');
 
-// Give local path to .csv file, read it and store the relevant data in output.json
-/*
-filePathLog = 'enter\\Desktop\\Reactive and eventbased systems\\assignments\\REBSassignment1\\REBSassignment1\\REBS2021-main\\REBS2021-main\\log.csv';
-readCSV(filePathLog)
-*/
-readCSV("log.csv")
 
-// Read the JSON file
-const jsonData = fs.readFileSync('output.json', 'utf-8');
 
-// Parse the JSON data
-const listOfLists = JSON.parse(jsonData);
 
-/// FIX DATA STRCUTURE
-trace_dict = {}
-for (i = 0; i < listOfLists.length; i++){
-    if (!trace_dict[listOfLists[i][0]]) {
-        trace_dict[listOfLists[i][0]] = [listOfLists[i][1]]
-    } else {
-        trace_dict[listOfLists[i][0]].push(listOfLists[i][1])
+function create_trace_dict(listOfLists){
+    /// Convert list to dictionary
+    trace_dict = {}
+    for (i = 0; i < listOfLists.length; i++){
+        if (!trace_dict[listOfLists[i][0]]) {
+            trace_dict[listOfLists[i][0]] = [listOfLists[i][1]]
+        } else {
+            trace_dict[listOfLists[i][0]].push(listOfLists[i][1])
+        }
     }
+    // console.log("Trace dict: ", trace_dict)    // DISPLAY TRACE DICTIONARY
+    return trace_dict
 }
-console.log("Trace dict: ", trace_dict)
 
 
-///// CREATE GRAPH
-
-
-
-
-const ruleList = new Event()
-ruleList.events = [ // EIP
-    "A(0,1,0)",        
-    "B(0,1,0)",        
-    // "Fill_out_application -->* B",
-    // "B *--> A",
-    // "C -->% A",
-    // "D -->+ A",    
-    // "D -->* B",
-    "A *--> B"
-    // "Fill_out_application -->+ Review",
-    // "Fill_out_application -->* Review"
-    // "Fill_out_application --><> Lawyer Review"
-    ];
-    // "A --><> (B, D)"];
 
 const rule1 = new Event()
-
-rule1.events = 
-    [
-    "Fill_out_application(0,1,0)",
-    "other_than_fill_out_application",
-    "Fill_out_application *--> other_than_fill_out_application"
+rule1.events = [
+    "fill_out_application",
+    "other",
+    "fill_out_application -->* other"
     ];
-    // [ // EIP
-    //         "A(0,1,0)",        
-    //         "B(0,1,0)",        
-    //         // "Fill_out_application -->* B",
-    //         // "B *--> A",
-    //         // "C -->% A",
-    //         // "D -->+ A",    
-    //         // "D -->* B",
-    //         "A *--> B"
-    //         // "Fill_out_application -->+ Review",
-    //         // "Fill_out_application -->* Review"
-    //         // "Fill_out_application --><> Lawyer Review"
-    //         ];
       
+const rule2 = new Event()
+rule2.events = [
+    /////// outcommented: goes from passed/failed =  0/594 to   304/ 290   (the outmarked was if it was milestones)
+    "lawyer_review",
+    // "other",
+    "architect_review",
+    // "other *--> lawyer_review",
+    // "other *--> architect_review",
+    "architect_review -->% lawyer_review",
+    "lawyer_review -->% architect_review"
+    // "architect_review --><> lawyer_review",
+    // "lawyer_review --><> architect_review"
+    ];
 
+const rule3 = new Event()
+rule3.events = [
+    "applicant_informed",
+    "change_phase_to_abort",
+    "reject",
+    "reject *--> applicant_informed",
+    "reject *--> change_phase_to_abort"
+    ];
 
-// function ruleNr1(graph) {
-//     const fillOutApplication = 'Fill_out_application'
-//     // graph.addEvent(fillOutApplication);
-//     for (const Role in trace_dict){
-//         const otherEvents = trace_dict[Role];
-//         console.log("ADDING EVENT: \n", otherEvents)
-//         for (const e of otherEvents){
-//             graph.addEvent(e)
-//             console.log(e)
-//         }
-        
-//         if ( fillOutApplication !== otherEvents[0]) {
-//             console.log("R1 failed");
-//         }
-//     }
-// }
+const rule4 = new Event()
+rule4.events = [
+        "first_payment",
+        "undo_payment",
+        "first_payment -->% first_payment",
+        "undo_payment -->+ first_payment"
+        ];
 
-function ruleNr1() {
-    pass = 0
-    fail = 0
-    graph =  new DCRGraph();
-    const fillOutApplication = 'Fill_out_application'
-    graph.addEvent(fillOutApplication);
-    for (const ID in trace_dict){
-        const otherEvents = trace_dict[ID];
-        console.log("ADDING EVENT: \n", otherEvents)
-        // for (const e of otherEvents){
-        //     // graph.addEvent(e)
-        //     // console.log(e)
-        // }
-        // console.log("Otherevents:", otherEvents)
-        console.log("Otherevents[0]:", otherEvents[0])
-        if (fillOutApplication !== otherEvents[0]) {
-            console.log("R1 failed");
-            fail += 1
-        }
-        pass += 1
-    }
-    console.log(" RULE1: pass", pass - failed, "failed", failed)
-    console.log(graph.status())
-}
+const rule5 = new Event()
+rule5.events = [
+    /// WORKS !!! first_payment doesnt have to be executed to be an accepting trace
+    "account_number_changed",
+    "first_payment",
+    "approve_changed_account",
+    "account_number_changed *--> approve_changed_account",
+    "approve_changed_account --><> first_payment"
+    // "approve_changed_account *--> first_payment",
+    ];
 
-function ruleNr2() {
-    pass = 0
-    fail = 0
-    graph =  new DCRGraph();
-    graph.addEvent('Architect_review');
-    graph.addEvent('Lawyer_review');
-    if(graph.getEvent('Architect_review').marking.pending && !graph.getEvent('Lawyer_review').marking.pending) {
-        graph.getEvent('Lawyer_review').marking.included = false
-    }
-    if(graph.getEvent('Lawyer_review').marking.pending && !graph.getEvent('Architect_review').marking.pending) {
-        graph.getEvent('Architect_review').marking.included = false
-    }
-    if(graph.getEvent('Lawyer_review').marking.executed || graph.getEvent('Architect_review').marking.executed){
-        // enabled or included ?????
-        graph.getEvent('Lawyer_review').marking.included = true
-        graph.getEvent('Architect_review').marking.included = true
-    }
-}
-    for (const ID in trace_dict){
-        const otherEvents = trace_dict[ID];
-        console.log("ADDING EVENT: \n", otherEvents)
-    }
+const rule6 = new Event()
+rule6.events = [
+    "change_phase_to_payout",
+    "first_payment",
+    "change_phase_to_payout *--> first_payment",
+    "change_phase_to_payout -->* first_payment"
+    ];
 
-        // for (const ID in trace_dict){
-        //     const otherEvents = Array.from(trace_dict[ID]);
-        //     for (const e of otherEvents){
-        //         graph.addEvent(e)
-        //         console.log(e)
-        //     }
-    
-        // }
-        // return graph;
-    // }
+const rule7 = new Event()
+//// fails trace 9 + 10 (as it should)
+rule7.events = [
+    "change_phase_to_payout",
+    "first_payment",
+    "change_phase_to_end_report",
+    "change_phase_to_payout *--> first_payment",
+    "first_payment --><> change_phase_to_end_report"
+    ];
 
+const rule8 = new Event()
+rule8.events = [
+    "execute_abandon",
+    "change_phase_to_abandon",
+    "other",
+    "execute_abandon -->% execute_abandon",
+    "execute_abandon -->% other"
+    ];
 
+///// CREATE GRAPH
 function dcrGraphCreator(event) {
-    
     graph = new DCRGraph();
 
     for (const e of event.events){
@@ -166,42 +115,43 @@ function dcrGraphCreator(event) {
             const markingParts = parts[0].replace(")","").split(/[,(]/);
             if (markingParts.length == 1) {
                 graph.addEvent(markingParts[0])
+                // console.log(graph.getEvent(markingParts[0]))
+            } else {
+                graph.addEvent(markingParts[0], l= markingParts[0], m= {ex: markingParts[1] == 1, in: markingParts[2] == 1, pe: markingParts[3] == 1})
             }
-            else {
-                graph.addEvent(markingParts[0], markingParts[0], m= {ex: markingParts[1] == 1, in: markingParts[2] == 1, pe: markingParts[3] == 1})
-            }
-
-            console.log("Added event")
-        }
-        
-        else if (parts.length > 2) {
-            console.log("Added relation")
+            // console.log("Added event")
+        } else if (parts.length = 3) {
+            // console.log("Added relation")
             const eventName = parts[0] 
             const relationType = parts[1]
             const targetEventName = parts[2]
             switch (relationType) {
                 case "-->*":
                     graph.addCondition(eventName, targetEventName);
-                    console.log("Added condition relation")
+                    // console.log("here")
+                    // console.log(graph.status())
+                    // console.log("Added condition relation")
                     break;
                 case '*-->':
                     graph.addResponse(eventName, targetEventName);
-                    console.log("Added response relation")
+                    // console.log("Added response relation")
                     break;
                 case '-->%':
                     graph.addExclude(eventName, targetEventName);
+                    // console.log("Added exclude relation")
                     break;
                 case '-->+':
                     graph.addInclude(eventName, targetEventName);
+                    // console.log("Added include relation")
                     break;
                 case '--><>':
                     graph.addMilestone(eventName, targetEventName);
+                    // console.log("Added milestone relation")
                     break;
                 default:
                     break;
             }
-        }
-        else {
+        } else {
             console.log("\n\n parts not equal to 1 or 3?? \n\n")
         }
     }
@@ -209,39 +159,125 @@ function dcrGraphCreator(event) {
 }
 
 
-function check(){
-    passed = 0
-    failed = 0
-    // for (const ID in trace_dict){
-        // DCR = dcrGraphCreator(rule1)
-        // DCR =  new DCRGraph();
-        // ruleNr1(DCR);
-        ruleNr1()
-        ruleNr2()
-        // for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
-        //     console.log("action" ,action)
-        //     // check if executing an excluded activity
-        //     // if (!DCR.getEvent(action).marking.included && DCR.execute(action)) {
-        //     if (!DCR.getEvent(action).marking.included) {
-        //         console.log("excluded: ", DCR.getEvent(action).marking.included)
-        //         failed +=1
-        //         break; 
-        //     }
-        //     DCR.execute(action)
-        // } 
-        // if (DCR.isAccepting()) {
-        //     passed += 1
-        //     console.log("PASS")
-        // } else {
-        //     failed +=1
-        //     console.log("FAILS") 
-        // }
-        // console.log(DCR.status())
-    // }
-    console.log("Passed: ", passed, "\nFailed: ",failed)
+function check(rules){
+    let total_pass = 0
+    let total_fail = 0
+    let trace_count = 0
+    for (let i = 1; i < rules.length+1; i++) {      // Iterate through rules
+        const currentRule = rules[i-1];  // Displays element 0 as element 1 for simplicity
+        curr_rule_passed = 0
+        curr_rule_failed = 0      
+        for (const ID in trace_dict){
+            DCR = dcrGraphCreator(currentRule);
+            trace_count +=1
+            for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
+                // console.log("action" ,action)
+                if (DCR.getEvent(action) == undefined)  {
+                    if (DCR.getEvent("other") == undefined){
+                        DCR.addEvent("other")
+                    }
+                    DCR.execute("other")
+                } else {
+                    // fail if executing an excluded activity and break to next rule
+                    if (!DCR.getEvent(action).marking.included) {
+                        // console.log("excluded: ", DCR.getEvent(action).marking.included)   /// doesnt show the marking getting excluded
+                        curr_rule_failed +=1
+                        break; 
+                    }
+                    DCR.execute(action)
+                }
+            }
+            if (DCR.isAccepting()) {
+                curr_rule_passed += 1
+                // console.log("PASS")
+            } else {
+                curr_rule_failed +=1
+                // console.log("FAILS") 
+            }
+            // console.log(DCR.status())    // TO SEE DCR GRAPH
+        }
+        // MILESTONE ERROR!!!!! (fails and passes counting)
+        // rule 4 ||rule 7 || rule 8 can both fail a trace, but also have an isAccepting trace (surcomvents the math to consider the error)
+        if (curr_rule_passed + curr_rule_failed > Object.keys(trace_dict).length ) {
+            curr_rule_passed -= curr_rule_failed
+        }
+        console.log("Rule:",i, " \t Passed: ", curr_rule_passed, "\t Failed: ",curr_rule_failed)
+        total_pass += curr_rule_passed
+        total_fail += curr_rule_failed
+        }
+    console.log("\nTotal \t \t Passed: ", total_pass, "\t Failed: ",total_fail)
+    // console.log("\nCount_Total_traces in dreyers log ",trace_count/rules.length)
+    // console.log("Total_traces : ", total_pass+total_fail/rules.length)
+    console.log("traces run: ",trace_count/rules.length,"/",(total_pass+total_fail)/rules.length)
+    
+    }
 
+
+
+
+// readCSV("log.csv")
+
+// Read the JSON file
+// const jsonData = fs.readFileSync('output.json', 'utf-8');
+
+// // Parse the JSON data
+// const listOfLists = JSON.parse(jsonData);
+
+// create_trace_dict(listOfLists)
+// let rulelist =[rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8];
+// check(rulelist)
+//  
+const args = process.argv.slice(2);
+
+// Process each CSV file
+// args.forEach((csvFile, index) => {
+//     console.log(`\n\nRunning tests for CSV file ${index + 1}: ${csvFile}`);
+    
+//     // Read the CSV file
+//     readCSV(csvFile);
+
+//     // Read the JSON file
+//     const jsonData = fs.readFileSync('output.json', 'utf-8');
+
+//     // Parse the JSON data
+//     const listOfLists = JSON.parse(jsonData);
+//     // Create trace dictionary
+//     create_trace_dict(listOfLists);
+
+//     // Run the checks for the rules
+//     let rulelist = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8];
+//     // let rulelist = [rule1, rule2, rule3, rule4];
+//     check(rulelist);
+// });
+
+// Ensure there are enough arguments
+if (args.length < 2) {
+    console.error('Usage: node main3.js <csvFile> <ruleNumbers>');
+    process.exit(1);
 }
 
-// DCR = dcrGraphCreator(rule1)
-check()
+const csvFile = args[0];
+const ruleNumbersArg = args[1];
 
+console.log(`\n\nRunning tests for CSV file: ${csvFile}`);
+
+// Read the CSV file
+readCSV(csvFile);
+
+// Read the JSON file
+const jsonData = fs.readFileSync('output.json', 'utf-8');
+
+// Parse the JSON data
+const listOfLists = JSON.parse(jsonData);
+
+// Create trace dictionary
+create_trace_dict(listOfLists);
+
+// Parse the rule numbers from the command line arguments
+const ruleNumbers = ruleNumbersArg.split(',').map(Number);
+
+// Filter the rules based on the provided rule numbers
+const rulelist = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8].filter((rule, index) => ruleNumbers.includes(index + 1));
+
+// Run the checks for the selected rules
+check(rulelist);
