@@ -195,18 +195,19 @@ function check(rules){
         if (curr_rule_passed + curr_rule_failed > Object.keys(trace_dict).length ) {
             curr_rule_passed -= curr_rule_failed
         }
-        console.log("Rule:",i, "\nPassed: ", curr_rule_passed, "\nFailed: ",curr_rule_failed)
+        console.log("Rule:",i, " \t Passed: ", curr_rule_passed, "\t Failed: ",curr_rule_failed)
         total_pass += curr_rule_passed
         total_fail += curr_rule_failed
         }
-    console.log("\nTotal_Passed: ", total_pass, "\nTotal_Failed: ",total_fail)
-    console.log("\nCount_Total_traces ",trace_count)
-    console.log("Total_traces we run: ", total_pass+total_fail)
+    console.log("\nTotal \t \t Passed: ", total_pass, "\t Failed: ",total_fail)
+    // console.log("\nCount_Total_traces in dreyers log ",trace_count/rules.length)
+    // console.log("Total_traces : ", total_pass+total_fail/rules.length)
+    console.log("traces run: ",trace_count/rules.length,"/",(total_pass+total_fail)/rules.length)
     }
 
 
 
-
+    
 readCSV("log.csv")
 
 // Read the JSON file
