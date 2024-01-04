@@ -10,33 +10,27 @@ const {DCRGraph, Marking, Event} = require('./dcr'); // You don't need to add th
 const { readCSV } = require('./csv_reader');
 const { fail } = require('assert');
 
-// Give local path to .csv file, read it and store the relevant data in output.json
-readCSV("log.csv")
 
-// Read the JSON file
-const jsonData = fs.readFileSync('output.json', 'utf-8');
 
-// Parse the JSON data
-const listOfLists = JSON.parse(jsonData);
 
-/// Convert list to dictionary
-trace_dict = {}
-for (i = 0; i < listOfLists.length; i++){
-    if (!trace_dict[listOfLists[i][0]]) {
-        trace_dict[listOfLists[i][0]] = [listOfLists[i][1]]
-    } else {
-        trace_dict[listOfLists[i][0]].push(listOfLists[i][1])
+function create_trace_dict(listOfLists){
+    /// Convert list to dictionary
+    trace_dict = {}
+    for (i = 0; i < listOfLists.length; i++){
+        if (!trace_dict[listOfLists[i][0]]) {
+            trace_dict[listOfLists[i][0]] = [listOfLists[i][1]]
+        } else {
+            trace_dict[listOfLists[i][0]].push(listOfLists[i][1])
+        }
     }
+    // console.log("Trace dict: ", trace_dict)    // DISPLAY TRACE DICTIONARY
+    return trace_dict
 }
-console.log("Trace dict: ", trace_dict)
-
-
 
 
 
 const rule1 = new Event()
-rule1.events = 
-    [
+rule1.events = [
     "fill_out_application",
     "other",
     "fill_out_application -->* other"
@@ -44,15 +38,6 @@ rule1.events =
       
 const rule2 = new Event()
 rule2.events = [
-    // ///EASIER understanding of milestone testing outcommented:  
-        // "fill_out_application(0,1,0)",
-        // "lawyer_review",
-        // "other",
-        // "architect_review",
-        // "fill_out_application -->* other",
-        // "other *--> architect_Review",
-        // "other --><> architect_Review"
-
     /////// outcommented: goes from passed/failed =  0/594 to   304/ 290   (the outmarked was if it was milestones)
     "lawyer_review",
     // "other",
@@ -163,8 +148,7 @@ function dcrGraphCreator(event) {
                 default:
                     break;
             }
-        }
-        else {
+        } else {
             console.log("\n\n parts not equal to 1 or 3?? \n\n")
         }
     }
@@ -186,11 +170,11 @@ function check(rules){
             for (const action of trace_dict[ID]){ // for (action = 1; action < listOfLists.length; action++){
                 // console.log("action" ,action)
                 if (DCR.getEvent(action) == undefined)  {
-                    DCR.execute("other")
+                    // DCR.execute("other")
                 } else {
                     // fail if executing an excluded activity and break to next rule
                     if (!DCR.getEvent(action).marking.included) {
-                        console.log("excluded: ", DCR.getEvent(action).marking.included)
+                        // console.log("excluded: ", DCR.getEvent(action).marking.included)   /// doesnt show the marking getting excluded
                         curr_rule_failed +=1
                         break; 
                     }
@@ -216,12 +200,21 @@ function check(rules){
         total_fail += curr_rule_failed
         }
     console.log("\nTotal_Passed: ", total_pass, "\nTotal_Failed: ",total_fail)
-    console.log("\nTotal_traces ",trace_count)
-    console.log("\nTotal_traces for us: ", total_pass+total_fail)
-
-    
-
+    console.log("\nCount_Total_traces ",trace_count)
+    console.log("Total_traces we run: ", total_pass+total_fail)
     }
-let rulelist =[rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8];
 
+
+
+
+readCSV("log.csv")
+
+// Read the JSON file
+const jsonData = fs.readFileSync('output.json', 'utf-8');
+
+// Parse the JSON data
+const listOfLists = JSON.parse(jsonData);
+
+create_trace_dict(listOfLists)
+let rulelist =[rule1,rule2,rule3,rule4,rule5,rule6,rule7,rule8];
 check(rulelist)

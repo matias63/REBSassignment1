@@ -6469,3 +6469,11 @@ ID;Event;Title;Role;Date;EventName;EventTypeLawyer
 14b-631_0;DL_WFCaseTypeStep|485;Round approved;recover;2015-05-03 13:31:07.587;Round approved;Task
 14b-631_0;DL_WFCaseTypeStep|510;Round ends;recover;2015-05-03 13:31:26.387;Round ends;Task
 14b-631_0;DL_WFCaseTypeStep|485;Round approved;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_3;DL_WFCaseTypeStep|485;reject;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_3;DL_WFCaseTypeStep|485;applicant informed;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_5;DL_WFCaseTypeStep|485;applicant informed;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_5;DL_WFCaseTypeStep|485;reject;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_7;DL_WFCaseTypeStep|485;change phase to abort;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_7;DL_WFCaseTypeStep|485;reject;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_7;DL_WFCaseTypeStep|485;applicant informed;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_7;DL_WFCaseTypeStep|485;change phase to abort;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task

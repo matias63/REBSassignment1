@@ -27,3 +27,13 @@ ID;Event;Title;Role;Date;EventName;EventTypeLawyer
 14a-027_11;DL_WFCaseTypeStep|497;change_phase_to_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
 14a-027_11;DL_WFCaseTypeStep|497;other;2013-12-25 12:36:38.987;Fill_out_application;Task
 14a-027_11;DL_WFCaseTypeStep|497;execute_abandon;2013-12-25 12:36:38.987;Fill_out_application;Task
+14b-631_1;DL_WFCaseTypeStep|485;Round approved;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_1;DL_WFCaseTypeStep|485;fill out application;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_3;DL_WFCaseTypeStep|485;reject;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_3;DL_WFCaseTypeStep|485;applicant informed;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_5;DL_WFCaseTypeStep|485;applicant informed;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_5;DL_WFCaseTypeStep|485;reject;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_7;DL_WFCaseTypeStep|485;change phase to abort;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_7;DL_WFCaseTypeStep|485;reject;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_7;DL_WFCaseTypeStep|485;applicant informed;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
+14b-631_7;DL_WFCaseTypeStep|485;change phase to abort;ANONYMOUS LOGON;2015-05-12 19:58:55.817;Round approved;Task
